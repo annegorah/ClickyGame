@@ -1,25 +1,35 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import CardList from './Components/CardList';
+import Nav from './Components/Nav'
 
 class App extends Component {
+  state = {
+    score: 0,
+    topScore: 0
+  }
+
+  scoreChangeHandle = () => {
+    let score = this.state.score;
+    let topScore = this.state.topScore;
+    score++;
+    if (topScore < score) topScore = score;
+    this.setState({
+      score,
+      topScore
+    })
+  }
+
+  onEndGame = (loose) => {
+    if (loose) alert("You loose, try again!")
+    if (!loose) alert("You win")
+    this.setState({ score: 0 });
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <Nav score={this.state.score} topScore={this.state.topScore} />
+        <CardList onEndGame={this.onEndGame} scoreChangeHandle={this.scoreChangeHandle} />
       </div>
     );
   }
